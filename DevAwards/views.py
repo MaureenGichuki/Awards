@@ -105,7 +105,7 @@ def submit_rates(request, project_id):
         messages.success(request, 'Your rating has been posted')
         
         return redirect(url)
-
+      
 class ProjectList(APIView):
     def get(self, request, format=None):
         all_projects = Project.objects.all()
