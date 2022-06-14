@@ -12,6 +12,10 @@ from .serializers import ProfileSerializer,ProjectSerializer
 
 # Create your views here.
 def home(request):
+    return render(request,'index.html')
+
+@login_required(login_url='/accounts/login/')
+def project(request):
     project=Project.objects.all()
     if request.method=='POST':
         current_user=request.user
@@ -24,8 +28,7 @@ def home(request):
             return redirect('home')
     else:
             form=AddProjectForm()
-
-    return render(request,'index.html',{'form':form,'projects':project})
+    return render(request,'new_project.html',{'form':form,'projects':project})
 
 @login_required(login_url='/accounts/login/')
 def profile(request,user_id):
@@ -102,7 +105,6 @@ def submit_rates(request, project_id):
         messages.success(request, 'Your rating has been posted')
         
         return redirect(url)
-##
 
 class ProjectList(APIView):
     def get(self, request, format=None):

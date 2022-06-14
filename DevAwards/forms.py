@@ -16,8 +16,10 @@ class UpdateProfileForm(ModelForm):
         fields = ['bio','profile_photo']
 
 class RatingForm(forms.ModelForm):
-  class Meta:
-    model = Ratings
-    fields = ['design', 'userbility', 'content']
+    class Meta:
+        model = Ratings
+        fields = ['design', 'userbility', 'content']
+    def save(self, commit=True):
+        instance = super().save(commit=False)
 
         
