@@ -20,7 +20,7 @@ def home(request):
             project=form.save(commit=False)
             project.user=current_user
             project.save()
-            messages.success(request,('Project was posted successfully!'))
+            messages.success(request,('Project Was Posted Successfully!'))
             return redirect('home')
     else:
             form=AddProjectForm()
@@ -66,7 +66,7 @@ def update_profile(request):
             return redirect('profile')
     else:
         form=UpdateProfileForm()
-    return render(request,'profile/update_profile.html',{'form':form})
+    return render(request,'profile/profile_update.html',{'form':form})
 
 @login_required(login_url='/accounts/login/')
 def project_details(request, project_id):
@@ -78,7 +78,7 @@ def project_details(request, project_id):
   except Project.DoesNotExist:
     raise Http404
   
-  return render(request, 'pro_details.html', {"details":project_details, "rates":project_rates, "form":form})
+  return render(request, 'project_details.html', {"details":project_details, "rates":project_rates, "form":form})
 
 @login_required(login_url='/accounts/login/')
 def search_results(request):
