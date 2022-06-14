@@ -37,5 +37,9 @@ This is a django app allows users to post, view and rate websites according to d
 ## Contact Information
 You can reach me at[maureenwaruguru@gmail.com]
 
+## DevAwards
+![ DevAwards](dev.png)
+
+
 ## You can view the site here
 The DevAwards []
