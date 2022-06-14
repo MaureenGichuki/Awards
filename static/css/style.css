@@ -1,0 +1,9 @@
+#images{
+    background-image: url("https://images.pexels.com/photos/7005503/pexels-photo-7005503.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+    background-attachment: fixed;
+    background-size: cover;
+    padding: 300px;
+}
+.navbar-form{
+    width: 300px;
+}
