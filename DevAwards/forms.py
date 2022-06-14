@@ -2,7 +2,6 @@ from django.forms import ModelForm
 from django import forms
 from . models import *
 
-
 class AddProjectForm(ModelForm):
     class Meta:
         model = Project
@@ -10,10 +9,12 @@ class AddProjectForm(ModelForm):
         widgets= {
             'url':forms.Textarea()
         }
+
 class UpdateProfileForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['bio','profile_photo']
+
 class RatingForm(forms.ModelForm):
   class Meta:
     model = Ratings

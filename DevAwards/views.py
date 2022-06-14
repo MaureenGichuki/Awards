@@ -37,9 +37,7 @@ def profile(request,user_id):
     form=AddProjectForm()
     return render(request, 'profile/profile.html', {"projects": projects,'form':form, "profile": profile})
 
-@login_required(login_url='/accounts/login/')
 def update_profile(request):
-  	#Get the profile
     current_user=request.user
     profile = Profile.objects.filter(id=current_user.id).first()
     if request.method == 'POST':
@@ -77,7 +75,7 @@ def search_results(request):
     message = f"{title_search}"
     return render(request, 'search.html', {"message":message, "projects":searched_projects,"form":form})
   else:
-    message = "You have not yet made a search"
+    message = "Make a Search"
 
     return render(request, 'search.html', {"message":message})
 
@@ -95,17 +93,16 @@ def submit_rates(request, project_id):
     except Ratings.DoesNotExist:
       form = RatingForm(request.POST)
       if form.is_valid():
-        # rating_data = Votes()
         design = form.cleaned_data.get('design')
         userbility = form.cleaned_data.get('userbility')
         content = form.cleaned_data.get('content')
-        # form.instance.Avg_score = design_score
         form.instance.project_id=project_id
         form.instance.user_id = request.user.id
         form.save()
         messages.success(request, 'Your rating has been posted')
         
         return redirect(url)
+##
 
 class ProjectList(APIView):
     def get(self, request, format=None):

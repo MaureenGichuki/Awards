@@ -7,13 +7,11 @@ from django import forms
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
-# image model 
 class Project(models.Model):
     """
-    This class takes care of the posted projects
+    Posted projects
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(blank=True, upload_to = 'photos/')
     title = models.CharField(max_length=50)
     description=models.CharField(max_length=100)
@@ -32,7 +30,6 @@ class Project(models.Model):
     def delete_project(self):
         self.delete()
 
-    #  get by id
     @classmethod
     def get_one_project(cls, id):
         project = cls.objects.get(id=id)
@@ -49,17 +46,11 @@ class Project(models.Model):
     def __str__(self):
         return self.user.username       
 
-    
-
-
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     profile_photo = models.ImageField(blank=True, upload_to = 'profiles/')
-
     bio = models.TextField(max_length=500, blank=True, null=True)
-
     contact = models.CharField(max_length=50, blank=True, null=True)
 
     def update(self):
@@ -83,11 +74,11 @@ class Profile(models.Model):
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
+
     @classmethod
     def search_profiles(cls, search_term):
         profiles = cls.objects.filter(user__username__icontains=search_term).all()
         return profiles
-
 
 class Ratings(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -108,8 +99,6 @@ class Ratings(models.Model):
                                     MaxValueValidator(10),
                                     MinValueValidator(1)
                                   ])
-
-
    
     def update(self):
         self.save()
