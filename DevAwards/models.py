@@ -3,14 +3,17 @@ from django.contrib.auth.models import User
 from django.forms import ImageField, ModelForm, widgets
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django import forms
 from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
+# image model 
 class Project(models.Model):
     """
-   Posted projects class
+    This class takes care of the posted projects
     """
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='projects')
+
     image = models.ImageField(blank=True, upload_to = 'photos/')
     title = models.CharField(max_length=50)
     description=models.CharField(max_length=100)
@@ -29,11 +32,13 @@ class Project(models.Model):
     def delete_project(self):
         self.delete()
 
+    #  get by id
     @classmethod
     def get_one_project(cls, id):
         project = cls.objects.get(id=id)
         return project
 
+    
     @classmethod
     def search_by_title(self, search_title):
         
@@ -44,11 +49,17 @@ class Project(models.Model):
     def __str__(self):
         return self.user.username       
 
+    
+
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+
     profile_photo = models.ImageField(blank=True, upload_to = 'profiles/')
+
     bio = models.TextField(max_length=500, blank=True, null=True)
+
     contact = models.CharField(max_length=50, blank=True, null=True)
 
     def update(self):
@@ -64,7 +75,6 @@ class Profile(models.Model):
     def get_profile_by_user(cls, user):
         profile = cls.objects.filter(user=user)
         return profile       
-
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
@@ -73,11 +83,11 @@ class Profile(models.Model):
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
-
     @classmethod
     def search_profiles(cls, search_term):
         profiles = cls.objects.filter(user__username__icontains=search_term).all()
         return profiles
+
 
 class Ratings(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
@@ -99,13 +109,13 @@ class Ratings(models.Model):
                                     MinValueValidator(1)
                                   ])
 
+
    
     def update(self):
         self.save()
 
     def save_ratings(self):
         self.save()
-        
     def delete_ratings(self):
         self.delete()
         
@@ -116,4 +126,3 @@ class Ratings(models.Model):
 
     def __str__(self):
         return self.user.username
-

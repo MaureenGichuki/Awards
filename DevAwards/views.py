@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth.decorators import login_required
 from django.http  import HttpResponse,Http404
-from .forms import AddProjectForm, Project,Profile,Rating, UpdateProfileForm,RatingForm
+from .forms import AddProjectForm, Project,Profile,Ratings, UpdateProfileForm,RatingForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from rest_framework.response import Response
@@ -20,28 +20,12 @@ def home(request):
             project=form.save(commit=False)
             project.user=current_user
             project.save()
-            messages.success(request,('Project Was Posted Successfully!'))
-            return redirect('home')
-    else:
-            form=AddProjectForm()
-
-    return render(request,'index.html',{'form':form,'projects':project})
-
-def project(request):
-    project=Project.objects.all()
-    if request.method=='POST':
-        current_user=request.user
-        form=AddProjectForm(request.POST,request.FILES)
-        if form.is_valid():
-            project=form.save(commit=False)
-            project.user=current_user
-            project.save()
             messages.success(request,('Project was posted successfully!'))
             return redirect('home')
     else:
             form=AddProjectForm()
-    return render(request,'index.html',{'form':form,'projects':project})
 
+    return render(request,'index.html',{'form':form,'projects':project})
 
 @login_required(login_url='/accounts/login/')
 def profile(request,user_id):
@@ -52,7 +36,8 @@ def profile(request,user_id):
     profile = Profile.objects.filter(id = current_user.id).first()
     form=AddProjectForm()
     return render(request, 'profile/profile.html', {"projects": projects,'form':form, "profile": profile})
-  
+
+@login_required(login_url='/accounts/login/')
 def update_profile(request):
   	#Get the profile
     current_user=request.user
@@ -74,7 +59,7 @@ def project_details(request, project_id):
   form = RatingForm(request.POST)
   try:
     project_details = Project.objects.get(pk = project_id)
-    project_rates = Rating.objects.filter(project__id=project_id).all()
+    project_rates = Ratings.objects.filter(project__id=project_id).all()
   except Project.DoesNotExist:
     raise Http404
   
@@ -102,12 +87,12 @@ def submit_rates(request, project_id):
   url = request.META.get('HTTP_REFERER')
   if request.method == 'POST':
     try:
-      rating = Rating.objects.get(user__id=request.user.id, project__id=project_id)
+      rating = Ratings.objects.get(user__id=request.user.id, project__id=project_id)
       form = RatingForm(request.POST, instance=rating)
       form.save()
       messages.success(request, 'Your rating has been updated')
       return redirect(url)
-    except Rating.DoesNotExist:
+    except Ratings.DoesNotExist:
       form = RatingForm(request.POST)
       if form.is_valid():
         # rating_data = Votes()
