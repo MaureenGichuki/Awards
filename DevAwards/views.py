@@ -37,7 +37,7 @@ def profile(request,user_id):
     projects = Project.objects.filter(user=current_user)
     profile = Profile.objects.filter(id = current_user.id).first()
 
-    return render(request, 'profile', {"projects": projects, "profile": profile})
+    return render(request, 'profile/profile.html', {"projects": projects, "profile": profile})
 
 def update_profile(request):
     current_user=request.user
