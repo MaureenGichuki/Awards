@@ -23,15 +23,15 @@ class ProjectTestClass(TestCase):
 
     def setUp(self):
         # Creating a new Project
-        self.foodie= Project(caption = 'foodie',pic="logo.png")
+        self.momo= Project(description = 'hey',image="logo.png")
 
     def test_instance(self):
-        self.assertTrue(isinstance(self.greece,Project))
+        self.assertTrue(isinstance(self.momo,Project))
 
     def test_save_method(self):
-        self.foodie.post()
-        posts = Project.objects.all()
-        self.assertTrue(len(posts) > 0)
+        self.momo.post()
+        projects = Project.objects.all()
+        self.assertTrue(len(projects) > 0)
 
 
 
