@@ -73,7 +73,7 @@ class Profile(models.Model):
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
-        
+
     @classmethod
     def search_profiles(cls, search_term):
         profiles = cls.objects.filter(user__username__icontains=search_term).all()
@@ -105,6 +105,7 @@ class Ratings(models.Model):
 
     def save_ratings(self):
         self.save()
+        
     def delete_ratings(self):
         self.delete()
         
