@@ -1,0 +1,53 @@
+{%extends 'base.html'%}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+{{block.super}}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" id="bgimage">
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                    <form class="navbar-form" role="search" method="" action="{% url 'search_results' %}">
+
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search By Project Name" name="search">
+                            <div class="input-group-btn">
+                                <button class="btn btn-warning" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-4"></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <h5>Featured Projects</h5>
+        {% if projects %}
+        {% for project in projects %}
+        <div class="col-md-4">
+            <a href="{% url 'projectdetails' project_id=project.id%}" class="thumbnail">
+                <div class="card">
+                    <div class="card-header">
+                        <p><b>{{project.title}}</b></p>
+                    </div>
+                    <div class="card-body">
+                        <img src="{{project.image.url}}" class="img-fluid" 
+                            alt="Project">
+                    </div>
+                </div>
+
+            </a>
+        </div>
+        {% endfor %}
+        {%else %}
+        <p>There are no Projects to show</p>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
