@@ -14,7 +14,6 @@ from .serializers import ProfileSerializer,ProjectSerializer
 def home(request):
     return render(request,'index.html')
 
-@login_required(login_url='/accounts/login/')
 def project(request):
     project=Project.objects.all()
     if request.method=='POST':
@@ -25,7 +24,7 @@ def project(request):
             project.user=current_user
             project.save()
             messages.success(request,('Project was posted successfully!'))
-            return redirect('home')
+            return redirect('index')
     else:
             form=AddProjectForm()
     return render(request,'new_project.html',{'form':form,'projects':project})
@@ -37,8 +36,8 @@ def profile(request,user_id):
     current_user = request.user
     projects = Project.objects.filter(user=current_user)
     profile = Profile.objects.filter(id = current_user.id).first()
-    form=AddProjectForm()
-    return render(request, 'profile/profile.html', {"projects": projects,'form':form, "profile": profile})
+
+    return render(request, 'profile', {"projects": projects, "profile": profile})
 
 def update_profile(request):
     current_user=request.user
