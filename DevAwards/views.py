@@ -24,7 +24,7 @@ def project(request):
             project.user=current_user
             project.save()
             messages.success(request,('Project was posted successfully!'))
-            return redirect('index')
+            return redirect('profile/profile.html')
     else:
             form=AddProjectForm()
     return render(request,'new_project.html',{'form':form,'projects':project})
