@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib.auth.decorators import login_required
 from django.http  import HttpResponse,Http404
-from .forms import AddProjectForm, Project,Profile,Ratings, UpdateProfileForm,RatingForm
+from .forms import AddProjectForm, Project,Profile,Ratings,UpdateProfileForm,RatingForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from rest_framework.response import Response
@@ -88,7 +88,7 @@ def submit_rates(request, project_id):
   if request.method == 'POST':
     try:
       rating = Ratings.objects.get(user__id=request.user.id, project__id=project_id)
-      form = RatingForm(request.POST, instance=rating)
+      form = RatingForm(request.POST,request.FILES,instance=rating)
       form.save()
       messages.success(request, 'Your rating has been updated')
       return redirect(url)
